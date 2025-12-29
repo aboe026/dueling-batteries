@@ -32,6 +32,8 @@ import exists from './exists'
     input: zipFilePath,
     output: sourceDir,
   })
+
+  await adjustSourceFiles(sourceDir)
 })().catch((err) => {
   console.error(err)
   process.exitCode = 1
@@ -64,4 +66,18 @@ async function extract({ input, output }: { input: string; output: string }): Pr
 
   // Clean up
   await fs.unlink(input)
+}
+
+async function adjustSourceFiles(sourceDir: string): Promise<undefined> {
+  const honeyFacePath = path.join(sourceDir, 'honeyface.json')
+  console.log(`Pretty-printing "${honeyFacePath}"`)
+
+  const raw = await fs.readFile(honeyFacePath, 'utf8')
+  const parsed = JSON.parse(raw)
+
+  // Pretty-print with 2-space indentation
+  const pretty = JSON.stringify(parsed, null, 2)
+
+  await fs.writeFile(honeyFacePath, pretty, 'utf8')
+  console.log('Pretty-printed honeyface.json')
 }
