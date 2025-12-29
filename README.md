@@ -1,121 +1,70 @@
 # Dueling Batteries
 
-A Wear OS Watch face showing watch and phone battery level, weather and heart rate, in Watch Face Format.
+A Wear OS watch face showing watch and phone battery levels, weather and heart rate — packaged in [Watch Face Format](https://developer.android.com/training/wearables/wff).
 
-This repository contains helper scripts to **build** and **extract** Watch Face Studio (`.wfs`) project files.
+This repository includes Node‑based helper scripts to **build** and **extract** Watch Face Studio project files.
 
 ---
 
 ## 📂 Project Structure
 
 ```
-
-/ # repository root directory
-├── build/ # generated output files (.zip, .wfs, validation-tail.bin)
-├── src/ # Watch Face Studio source files
-└── scripts/ # Scripts for converting between source files and Watch Face Studio files
-
+/  # repository root
+├── build/    # generated .wfs file
+├── src/      # Watch Face Studio project source files
+└── scripts/  # Node/TypeScript build + extract utilities
 ```
+
+---
+
+## Requirements
+
+- [Node.js](https://nodejs.org)
+- [npm](https://www.npmjs.com/) (bundled with Node)
 
 ---
 
 ## 🚀 Build Workflow
 
-### Windows (PowerShell)
-
 From the repo root:
 
-```powershell
-.\scripts\build.ps1
+```
+npm run build
 ```
 
-This will:
+This command will:
 
-- Delete and recreate the `build\` directory to ensure a clean run.
-- Compress the contents of `src\` into a zip.
+- Remove and recreate the `build/` directory.
+- Zip the contents of `src/` using Node + TypeScript.
 - Append the required 16‑byte validation tail (`normal_watchface`).
-- Produce `DuelingBatteries.wfs` in the `build\` directory.
+- Output `DuelingBatteries.wfs` into the `build/` directory.
 
-If you see an error like _“running scripts is disabled on this system”_, temporarily allow script execution:
-
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-```
-
-Once generated, you can open the [DuelingBatteries.wfs](./build/DuelingBatteries.wfs) file in [Watch Face Studio](https://developer.samsung.com/watch-face-studio/overview.html).
-
----
-
-### Linux / macOS (Bash)
-
-From the repo root:
-
-```bash
-./scripts/build.sh
-```
-
-Make sure the script is executable first:
-
-```bash
-chmod +x scripts/build.sh
-```
-
-This will:
-
-- Delete and recreate the `build/` directory to ensure a clean run.
-- Compress the contents of `src/` into a zip.
-- Append the validation tail.
-- Produce `DuelingBatteries.wfs` in the `build/` directory.
-
-Once generated, you can open the [DuelingBatteries.wfs](./build/DuelingBatteries.wfs) file in [Watch Face Studio](https://developer.samsung.com/watch-face-studio/overview.html).
+You can then open the generated `.wfs` file in
+[Watch Face Studio](https://developer.samsung.com/watch-face-studio/overview.html).
 
 ---
 
 ## 🔄 Extract Workflow
 
-### Windows (PowerShell)
-
 From the repo root:
 
-```powershell
-.\scripts\extract.ps1
 ```
-
-This will:
-
-- Verify that `build\DuelingBatteries.wfs` exists.
-- Strip the 16‑byte validation tail.
-- Delete and recreate the `src\` directory.
-- Expand the archive into `src\`.
-
----
-
-### Linux / macOS (Bash)
-
-From the repo root:
-
-```bash
-./scripts/extract.sh
-```
-
-Make sure the script is executable first:
-
-```bash
-chmod +x scripts/extract.sh
+npm run extract
 ```
 
 This will:
 
 - Verify that `build/DuelingBatteries.wfs` exists.
 - Strip the 16‑byte validation tail.
-- Delete and recreate the `src/` directory.
-- Expand the archive into `src/`.
+- Remove and recreate the `src/` directory.
+- Unzip the archive contents into `src/`.
+
+This gives you a clean, Git‑friendly version of the project.
 
 ---
 
-## ✅ Round‑trip workflow
+## 🔁 Round‑trip Workflow
 
-- **Build:** edit files in `src/` → run `build` → get `.wfs` in `build/` for Watch Face Studio.
-- **Extract:** take `.wfs` from Watch Face Studio → run `extract` → update files in `src/` for Git.
-
----
+1. **Build** → run `npm run build` to generate a `.wfs` file for Watch Face Studio.
+2. **Modify** → open the `.wfs` in Watch Face Studio, make changes, save.
+3. **Extract** → run `npm run extract` to sync the updated `.wfs` back into `src/`.

@@ -1,0 +1,21 @@
+{
+  "name": "dueling-batteries",
+  "version": "1.0.0",
+  "author": "Adam Boe",
+  "description": "A Wear OS Watch face showing watch and phone battery level, weather and heart rate, in Watch Face Format.",
+  "scripts": {
+    "build": "ts-node scripts/build.ts",
+    "extract": "ts-node scripts/extract.ts"
+  },
+  "dependencies": {
+    "zip-lib": "1.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "25.0.3",
+    "eslint": "9.39.2",
+    "prettier": "3.7.4",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.51.0",
+    "ts-node": "10.9.2"
+  }
+}
